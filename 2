@@ -1,0 +1,77 @@
+#include <iostream>
+#include <fstream>
+#include <cstdlib>
+#include <sstream>
+using namespace std;
+bool isInteger(string word);
+int main() {
+    string filename;
+    cout<<"Please enter a filename to read from "<<endl;
+    cin>>filename;
+    ifstream file;
+    file.open(filename);
+    if(!file){
+        cout<<"File could not be opened "<<filename<<endl;
+        exit(1);
+    }
+    int numLines=0;
+    int nonBlankLines=0;
+    int words=0;
+    int integers=0;
+    string line;
+    while(!file.eof()){
+        getline(file,line);
+        numLines++;
+        if(!line.empty()){
+            nonBlankLines++;
+        }
+        istringstream iss(line);
+        string word;
+        while(iss>>word) {
+            words++;
+            if (isInteger(word)) {
+                integers++;
+            }
+
+        }
+    }
+    file.close();
+    numLines--;
+    cout<<"Total Number of Lines: "<<numLines<<endl;
+    cout<<"Number of non-blank lines: "<<nonBlankLines<<endl;
+    cout<<"Number of words: "<<words<<endl;
+    cout<<"Number of Integers: "<<integers<<endl;
+
+    return 0;
+}
+
+ bool isInteger(string word){
+    bool flag=true;
+    for(int i=0;i<word.length();i++){
+        if(word[i]=='-'||word[i]=='+'){
+            if(i!=0){
+                flag=false;
+                break;
+            }
+            else if(word.length()==1){
+                flag=false;
+                break;
+            }
+            else continue;
+        }
+        if(!isdigit(word[i])){
+            flag=false;
+            break;
+        }
+
+    }
+    if(flag==true){
+        return true;
+    }
+    else{
+        return false;
+    }
+
+
+
+}
